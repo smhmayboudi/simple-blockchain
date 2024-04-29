@@ -1,21 +1,11 @@
 package main
 
-import (
-	"fmt"
-)
-
 func main() {
 	bc := NewBlockchain()
+	defer bc.db.Close()
 
-	bc.AddBlock("Send 1 BTC to smhmayboudi")
-	bc.AddBlock("Send 2 more BTC to smhmayboudi")
-
-	for _, block := range bc.blocks {
-		fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
-		fmt.Printf("Data: %s\n", block.Data)
-		fmt.Printf("Hash: %x\n", block.Hash)
-		pow := NewProofOfWork(block)
-		fmt.Printf("PoW: %v\n", pow.Validate())
-		fmt.Println()
+	cli := CLI{
+		bc: bc,
 	}
+	cli.Run()
 }
