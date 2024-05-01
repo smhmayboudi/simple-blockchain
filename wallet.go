@@ -6,13 +6,14 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
+	"encoding/json"
 	"log"
 
 	"golang.org/x/crypto/ripemd160"
 )
 
 const version = byte(0x00)
-const walletFile = "wallet.dat"
+const walletFile = "wallet.db"
 const addressChecksumLen = 4
 
 // Wallet stores private and public keys
@@ -85,3 +86,25 @@ func newKeyPair() (ecdsa.PrivateKey, []byte) {
 
 	return *private, pubKey
 }
+
+// func (w Wallet) MarshalBinary() (data []byte, err error) {}
+// func (w Wallet) UnmarshalBinary(data []byte) error {}
+
+// func (w Wallet) MarshalBinary() ([]byte, error) {}
+func (w Wallet) MarshalJSON() ([]byte, error) {
+	mapStringAny := map[string]any{
+		"PrivateKey": map[string]any{
+			"D": w.PrivateKey.D,
+			"PublicKey": map[string]any{
+				"X": w.PrivateKey.PublicKey.X,
+				"Y": w.PrivateKey.PublicKey.Y,
+			},
+			"X": w.PrivateKey.X,
+			"Y": w.PrivateKey.Y,
+		},
+		"PublicKey": w.PublicKey,
+	}
+	return json.Marshal(mapStringAny)
+}
+
+// func (w Wallet) UnmarshalJSON(data []byte) error {}
