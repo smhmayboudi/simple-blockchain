@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/gob"
 	"log"
 	"time"
@@ -9,7 +10,7 @@ import (
 
 // Block is a structure to store each point of data.
 type Block struct {
-	Data          []byte
+	Transactions  []*Transaction
 	Hash          []byte
 	PrevBlockHash []byte
 	Timestamp     int64
@@ -17,13 +18,13 @@ type Block struct {
 	Nonce int
 }
 
-func NewGenesisBlock() *Block {
-	return NewBlock("Genesis Block", []byte{})
+func NewGenesisBlock(coinbase *Transaction) *Block {
+	return NewBlock([]*Transaction{coinbase}, []byte{})
 }
 
-func NewBlock(data string, prevBlockHash []byte) *Block {
+func NewBlock(transactions []*Transaction, prevBlockHash []byte) *Block {
 	block := &Block{
-		Data:          []byte(data),
+		Transactions:  transactions,
 		Hash:          []byte{},
 		PrevBlockHash: prevBlockHash,
 		Timestamp:     time.Now().Unix(),
@@ -47,6 +48,19 @@ func DeserializeBlock(d []byte) *Block {
 		log.Panic(err)
 	}
 	return &block
+}
+
+// HashTransactions returns a hash of the transactions in the block
+func (b *Block) HashTransactions() []byte {
+	var txHashes [][]byte
+	var txHash [32]byte
+
+	for _, tx := range b.Transactions {
+		txHashes = append(txHashes, tx.ID)
+	}
+	txHash = sha256.Sum256(bytes.Join(txHashes, []byte{}))
+
+	return txHash[:]
 }
 
 func (b *Block) Serialize() []byte {
