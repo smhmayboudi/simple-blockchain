@@ -1,7 +1,9 @@
 package main
 
 import (
-	"encoding/json"
+	"bytes"
+	"crypto/ecdh"
+	"encoding/gob"
 	"fmt"
 	"log"
 	"os"
@@ -59,47 +61,32 @@ func (ws *Wallets) LoadFromFile() error {
 		log.Panic(err)
 	}
 
-	// var wallets Wallets
-	// gob.Register(elliptic.P256())
-	// decoder := gob.NewDecoder(bytes.NewReader(fileContent))
-	// err = decoder.Decode(&wallets)
-	// if err != nil {
-	// 	log.Panic(err)
-	// }
-
-	// ws.Wallets = wallets.Wallets
-
-	err = json.Unmarshal(fileContent, ws)
+	var wallets Wallets
+	gob.Register(ecdh.P256())
+	decoder := gob.NewDecoder(bytes.NewReader(fileContent))
+	err = decoder.Decode(&wallets)
 	if err != nil {
 		log.Panic(err)
 	}
+
+	ws.Wallets = wallets.Wallets
 
 	return nil
 }
 
 // SaveToFile saves wallets to a file
 func (ws Wallets) SaveToFile() {
-	// var content bytes.Buffer
+	var content bytes.Buffer
 
-	// gob.Register(elliptic.P256())
+	gob.Register(ecdh.P256())
 
-	// encoder := gob.NewEncoder(&content)
-	// err := encoder.Encode(ws)
-	// if err != nil {
-	// 	log.Panic(err)
-	// }
-
-	// err = os.WriteFile(walletFile, content.Bytes(), 0644)
-	// if err != nil {
-	// 	log.Panic(err)
-	// }
-
-	jsonData, err := json.Marshal(ws)
+	encoder := gob.NewEncoder(&content)
+	err := encoder.Encode(ws)
 	if err != nil {
 		log.Panic(err)
 	}
 
-	err = os.WriteFile(walletFile, jsonData, 0666)
+	err = os.WriteFile(walletFile, content.Bytes(), 0644)
 	if err != nil {
 		log.Panic(err)
 	}

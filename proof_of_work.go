@@ -8,28 +8,29 @@ import (
 	"math/big"
 )
 
-const (
+var (
 	maxNonce = math.MaxInt64
-	// targetBits is the block header storing the difficulty at which the block was mined.
-	targetBits = 1 << 4
 )
 
+const targetBits = 16
+
+// ProofOfWork represents a proof-of-work
 type ProofOfWork struct {
 	block  *Block
 	target *big.Int
 }
 
-func NewProofOfWork(block *Block) *ProofOfWork {
+// NewProofOfWork builds and returns a ProofOfWork
+func NewProofOfWork(b *Block) *ProofOfWork {
 	target := big.NewInt(1)
 	target.Lsh(target, uint(256-targetBits))
 
-	return &ProofOfWork{
-		block:  block,
-		target: target,
-	}
+	pow := &ProofOfWork{b, target}
+
+	return pow
 }
 
-func (pow *ProofOfWork) PrepareData(nonce int) []byte {
+func (pow *ProofOfWork) prepareData(nonce int) []byte {
 	data := bytes.Join(
 		[][]byte{
 			pow.block.PrevBlockHash,
@@ -52,7 +53,7 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 
 	fmt.Printf("Mining a new block")
 	for nonce < maxNonce {
-		data := pow.PrepareData(nonce)
+		data := pow.prepareData(nonce)
 
 		hash = sha256.Sum256(data)
 		fmt.Printf("\r%x", hash)
@@ -69,10 +70,11 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 	return nonce, hash[:]
 }
 
+// Validate validates block's PoW
 func (pow *ProofOfWork) Validate() bool {
 	var hashInt big.Int
 
-	data := pow.PrepareData(pow.block.Nonce)
+	data := pow.prepareData(pow.block.Nonce)
 	hash := sha256.Sum256(data)
 	hashInt.SetBytes(hash[:])
 
