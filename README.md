@@ -17,6 +17,14 @@ https://github.com/smhmayboudi/simple_blockchain/
 
 - https://github.com/Jeiwan/blockchain_go
 
+- https://www.nikitv.ir/blog/post_40_bc1/
+- https://www.nikitv.ir/blog/post_41_bc2/
+- https://www.nikitv.ir/blog/post_42_bc3/
+- https://www.nikitv.ir/blog/post_43_bc4/
+- https://www.nikitv.ir/blog/post_44_bc5/
+- https://www.nikitv.ir/blog/post_45_bc6/
+- https://www.nikitv.ir/blog/post_46_bc7/
+
 - https://medium.com/coinmonks/creating-a-blockchain-part-1-transport-layer-327dc2a85df9
 - https://medium.com/coinmonks/creating-a-blockchain-part-2-blocks-and-hashing-ae7dc7549b08?source=user_profile---------8----------------------------
 - https://medium.com/coinmonks/creating-a-blockchain-part-3-crypto-key-pairs-signature-1a76d4dd9856?source=user_profile---------7----------------------------
@@ -34,11 +42,23 @@ https://github.com/smhmayboudi/simple_blockchain/
 
 ## RUN
 
-go run . createblockchain -address 15AedVzQJqeeS5UDcBnAtKfwe8o7gCsvJL
-go run . getbalance -address 15AedVzQJqeeS5UDcBnAtKfwe8o7gCsvJL
-go run . getbalance -address 1AweBuGtrBZf446nZmPAdaMj5Vk3kiEiyP
-go run . send -from 15AedVzQJqeeS5UDcBnAtKfwe8o7gCsvJL -to 1AweBuGtrBZf446nZmPAdaMj5Vk3kiEiyP -amount 2
+```SHELL
+$ NODE_ID=3000 go run . createwallet
+Your new address: 16PPYFiioDtFEHBYTd81Dcm3vBdTAKLCCj
 
-15AedVzQJqeeS5UDcBnAtKfwe8o7gCsvJL
-1AweBuGtrBZf446nZmPAdaMj5Vk3kiEiyP
-19QLTKXnqqyFXwP2taC5vQ2NHeqZzW4NgU
+$ NODE_ID=3000 go run . createwallet
+Your new address: 1BNfobn516oN7dB8dcEY9SKkBxetmUn62a
+
+$ NODE_ID=3000 go run . createblockchain -address 16PPYFiioDtFEHBYTd81Dcm3vBdTAKLCCj
+45e5d430eb64a03f23feaee9e711b6ad071104c1130d59e930c4c94693d13f3a
+
+Done!
+
+$ NODE_ID=3000 go run . getbalance -address 16PPYFiioDtFEHBYTd81Dcm3vBdTAKLCCj
+Balance of '16PPYFiioDtFEHBYTd81Dcm3vBdTAKLCCj': 10
+
+$ NODE_ID=3000 go run . getbalance -address 1BNfobn516oN7dB8dcEY9SKkBxetmUn62a
+Balance of '1BNfobn516oN7dB8dcEY9SKkBxetmUn62a': 0
+
+$ NODE_ID=3000 go run . send -from 16PPYFiioDtFEHBYTd81Dcm3vBdTAKLCCj -to 1BNfobn516oN7dB8dcEY9SKkBxetmUn62a -amount 2
+```

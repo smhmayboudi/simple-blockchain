@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 )
@@ -388,7 +387,7 @@ func handleVersion(request []byte, bc *Blockchain) {
 }
 
 func handleConnection(conn net.Conn, bc *Blockchain) {
-	request, err := ioutil.ReadAll(conn)
+	request, err := io.ReadAll(conn)
 	if err != nil {
 		log.Panic(err)
 	}
