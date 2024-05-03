@@ -15,6 +15,8 @@ https://github.com/smhmayboudi/simple_blockchain/
 - https://jeiwan.net/posts/building-blockchain-in-go-part-6/
 - https://jeiwan.net/posts/building-blockchain-in-go-part-7/
 
+- https://github.com/Jeiwan/blockchain_go
+
 - https://medium.com/coinmonks/creating-a-blockchain-part-1-transport-layer-327dc2a85df9
 - https://medium.com/coinmonks/creating-a-blockchain-part-2-blocks-and-hashing-ae7dc7549b08?source=user_profile---------8----------------------------
 - https://medium.com/coinmonks/creating-a-blockchain-part-3-crypto-key-pairs-signature-1a76d4dd9856?source=user_profile---------7----------------------------
