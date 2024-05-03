@@ -13,7 +13,6 @@ import (
 )
 
 const version = byte(0x00)
-const walletFile = "wallet.db"
 const addressChecksumLen = 4
 
 // Wallet stores private and public keys
@@ -90,7 +89,6 @@ func newKeyPair() (ecdsa.PrivateKey, []byte) {
 // func (w Wallet) MarshalBinary() (data []byte, err error) {}
 // func (w Wallet) UnmarshalBinary(data []byte) error {}
 
-// func (w Wallet) MarshalBinary() ([]byte, error) {}
 func (w Wallet) MarshalJSON() ([]byte, error) {
 	mapStringAny := map[string]any{
 		"PrivateKey": map[string]any{
